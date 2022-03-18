@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "start": "npx community-solid-server -c config-mashlib-sparql.json -s ${SPARQL_ENDPOINT}"
+  },
+  "dependencies": {
+    "@solid/community-server": "^3.0.0",
+    "@solid/community-server-metadata-extender": "^3.0.0",
+    "mashlib": "^1.8.0"
+  }
+}
