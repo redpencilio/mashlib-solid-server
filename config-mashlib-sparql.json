@@ -97,26 +97,6 @@
       "options_dctModified": true,
       "options_statMtime": true,
       "source": { "@id": "urn:solid-server:default:SparqlDataAccessor" }
-    },
-    {
-      "comment": "The key/cert values should be replaces with paths to the correct files. The 'options' block can be removed if not needed.",
-      "@id": "urn:solid-server:default:ServerFactory",
-      "@type": "WebSocketServerFactory",
-      "baseServerFactory": {
-        "@id": "urn:solid-server:default:HttpServerFactory",
-        "@type": "BaseHttpServerFactory",
-        "handler": { "@id": "urn:solid-server:default:HttpHandler" },
-        "options_showStackTrace": {
-          "@id": "urn:solid-server:default:variable:showStackTrace"
-        },
-        "options_https": true,
-        "options_key": "/path/to/server.key",
-        "options_cert": "/path/to/server.cert"
-      },
-      "webSocketHandler": {
-        "@type": "UnsecureWebSocketsProtocol",
-        "source": { "@id": "urn:solid-server:default:ResourceStore" }
-      }
     }
   ]
 }
