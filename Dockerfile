@@ -2,7 +2,7 @@ FROM node:16
 
 ENV SPARQL_ENDPOINT http://triplestore:8890/sparql
 ENV CONFIG_FILE config-mashlib-sparql.json
-
+ENV BASE_URL http://localhost:3000
 WORKDIR /usr/app
 
 COPY package*.json ./
