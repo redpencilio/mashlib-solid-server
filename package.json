@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "npx community-solid-server -c ${CONFIG_FILE} -s ${SPARQL_ENDPOINT} -b ${BASE_URL}"
+    "start": "npx community-solid-server -c ${CONFIG_FILE} -s ${SPARQL_ENDPOINT} -b ${BASE_URL} -f ${ROOT_FILE_PATH}"
   },
   "dependencies": {
     "@solid/community-server": "^3.0.0",
