@@ -18,7 +18,7 @@ RUN npm install
 COPY . .
 
 EXPOSE ${PORT}
-CMD ["npm" "start"\
+CMD [ "npm" "start"\
     "--"\
     "-c" ${CONFIG_FILE}\
     "-s" ${SPARQL_ENDPOINT}\
