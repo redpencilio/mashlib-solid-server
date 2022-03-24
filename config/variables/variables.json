@@ -43,6 +43,11 @@
       "@type": "Variable"
     },
     {
+      "comment": "Email host",
+      "@id": "urn:solid-server:default:variable:emailHost",
+      "@type": "Variable"
+    },
+    {
       "comment": "Email port",
       "@id": "urn:solid-server:default:variable:emailPort",
       "@type": "Variable"

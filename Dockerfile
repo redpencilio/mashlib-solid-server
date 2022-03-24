@@ -3,6 +3,7 @@ FROM node:16
 ENV SPARQL_ENDPOINT http://triplestore:8890/sparql
 ENV CONFIG_FILE config/config-mashlib-files.json
 ENV EMAIL_SENDER ""
+ENV EMAIL_HOST ""
 ENV EMAIL_PORT 465
 ENV EMAIL_USER ""
 ENV EMAIL_PASSWORD ""
@@ -26,6 +27,7 @@ CMD [ "npm", "start",\
     "-f", "$ROOT_FILE_PATH",\
     "-p", "$PORT",\
     "--emailSenderName", "$EMAIL_SENDER",\
+    "--emailHost", "$EMAIL_HOST",\
     "--emailPort", "$EMAIL_PORT",\
     "--emailUser", "$EMAIL_USER",\
     "--emailPassword", "$EMAIL_PASSWORD"] 
