@@ -1,5 +1,5 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^3.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^4.0.0/components/context.jsonld",
   "@graph": [
     {
       "comment": "Extracts CLI arguments into a key/value object. Config and mainModulePath are only defined here so their description is returned.",
@@ -58,6 +58,11 @@
           "type": "string",
           "describe": "Path to the file that keeps track of dynamic Pod configurations."
         },
+        "seededPodConfigJson": {
+          "requiresArg": true,
+          "type": "string",
+          "describe": "Path to the file that will be used to seed pods."
+        },
         "emailSenderName": {
           "requiresArg": true,
           "type": "string",
@@ -85,7 +90,9 @@
         }
       },
       "options": {
-        "usage": "node ./bin/server.js [args]"
+        "usage": "node ./bin/server.js [args]",
+        "envVarPrefix": "CSS",
+        "loadFromEnv": true
       }
     }
   ]
