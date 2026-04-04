@@ -1,0 +1,165 @@
+/*
+ * redpencil-theme.css
+ * Brand override for SolidOS / Mashlib 2.x
+ * Applies redpencil.io visual identity via CSS variable overrides.
+ */
+
+/* ── Lexend Deca (variable, full weight range) ────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap');
+
+/* ── Token overrides ──────────────────────────────────────────────────────── */
+:root {
+  /* Brand */
+  --color-primary:             #FB5353;
+  --color-primary-alpha:       rgba(251, 83, 83, 0.18);
+  --color-primary-alpha-light: rgba(251, 83, 83, 0.08);
+  --color-secondary:           #1e7575;
+  --color-accent:              #fde257;
+  --color-error:               #B00020;
+  --color-success:             #00875A;
+
+  /* Neutral palette — zinc-based */
+  --color-background:               #ffffff;
+  --color-background-row-default:   #ffffff;
+  --color-background-row-alternate: #f4f4f5;
+  --color-text:                     #18181b;
+  --color-text-secondary:           #52525b;
+  --color-text-light:               #a1a1aa;
+  --color-text-muted:               #71717a;
+  --color-text-dark-gray:           #3f3f46;
+  --color-text-link:                #FB5353;
+  --color-text-link-visited:        #c43c3c;
+  --color-text-link-hover:          #e03c3c;
+  --color-text-link-active:         #a82c2c;
+
+  /* Borders */
+  --color-border:       #d4d4d8;
+  --color-border-dark:  #a1a1aa;
+  --color-border-darker:#71717a;
+  --color-border-light: #e4e4e7;
+  --color-border-pale:  #f4f4f5;
+
+  /* Component backgrounds */
+  --color-main-block-bg:  #ffffff;
+  --color-card-bg:        #ffffff;
+  --color-section-bg:     #f9f9fb;
+  --color-nav-block-bg:   #f4f4f5;
+  --color-nav-block-border: #d4d4d8;
+
+  /* Menu */
+  --color-menu-bg:          #ffffff;
+  --color-menu-item-text:   #18181b;
+  --color-menu-item-active: rgba(251, 83, 83, 0.08);
+
+  /* Tabs */
+  --color-tab-inactive-bg:            #f4f4f5;
+  --color-tab-inactive-border:        #d4d4d8;
+  --color-tab-inactive-border-light:  #e4e4e7;
+  --color-tab-inactive-text:          #71717a;
+  --color-tab-active-bg:              #ffffff;
+  --color-tab-active-border:          #d4d4d8;
+  --color-tab-active-border-light:    #e4e4e7;
+  --color-tab-active-text:            #FB5353;
+
+  /* Table */
+  --color-table-header-bg:  #f4f4f5;
+  --color-table-result-bg:  #ffffff;
+  --color-table-border-dark:#a1a1aa;
+
+  /* Zebra / hover */
+  --color-zebra-stripe: rgba(0, 0, 0, 0.02);
+  --color-hover-bg:     rgba(251, 83, 83, 0.05);
+  --color-selected-bg:  rgba(251, 83, 83, 0.12);
+
+  /* Misc component colours */
+  --color-container-border:    #d4d4d8;
+  --color-iframe-bg:           #ffffff;
+  --color-source-highlight:    #fde257;
+  --color-pending-edit:        #d4d4d8;
+  --color-col-close:           #a1a1aa;
+  --color-sort-arrow:          #a1a1aa;
+  --color-bottom-border-highlight: #FB5353;
+  --color-category-bg:         #fff7f7;
+  --color-category-border:     #d4d4d8;
+  --color-pubs-pane-bg:        #f9f9fb;
+  --color-pubs-pane-border:    #d4d4d8;
+  --color-cv-pane-bg:          #e0f2f2;
+  --color-data-pane-border-top: #d4d4d8;
+  --color-data-pane-border-side: #e4e4e7;
+  --color-mild-notice-bg:      #fffbeb;
+  --color-view-tab-bg:         #ffffff;
+  --color-view-window-bg:      #f4f4f5;
+  --color-query-select-bg:     #f4f4f5;
+
+  /* Suggestion / autocomplete */
+  --color-suggestion-bg:            #ffffff;
+  --color-suggestion-border:        #d4d4d8;
+  --color-suggestion-link:          #FB5353;
+  --color-suggestion-selected-bg:   #FB5353;
+  --color-suggestion-selected-text: #ffffff;
+
+  /* Shadows — red tint instead of purple */
+  --box-shadow:        0 2px 8px  rgba(251, 83, 83, 0.08);
+  --box-shadow-sm:     0 1px 4px  rgba(251, 83, 83, 0.10);
+  --box-shadow-hover:  0 2px 12px rgba(251, 83, 83, 0.14);
+  --box-shadow-active: 0 1px 3px  rgba(251, 83, 83, 0.18);
+  --box-shadow-focus:  0 0 0 4px  rgba(251, 83, 83, 0.20);
+  --box-shadow-modal:  0 2px 10px rgba(0, 0, 0, 0.20);
+  --box-shadow-overlay:0 4px 24px rgba(0, 0, 0, 0.16);
+  --box-shadow-popup:  0 0.5em 0.9em rgba(0, 0, 0, 0.16);
+
+  /* Typography */
+  --font-family-base: 'Lexend Deca', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-family-ui:   'Lexend Deca', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Shape */
+  --border-radius-base: 0.375rem;
+  --border-radius-lg:   0.5rem;
+  --border-radius-full: 9999px;
+}
+
+/* ── Base elements ────────────────────────────────────────────────────────── */
+body {
+  font-family: var(--font-family-base);
+  font-weight: 400;
+  color: var(--color-text);
+  background-color: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headers: same Lexend Deca, heavier weight for hierarchy */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-base);
+  font-weight: 600;
+  color: var(--color-text);
+}
+h1 { font-weight: 700; }
+h2 { font-weight: 600; }
+h3 { font-weight: 600; }
+h4, h5, h6 { font-weight: 500; }
+
+a {
+  color: var(--color-primary);
+}
+a:hover {
+  color: #e03c3c;
+}
+a:visited {
+  color: var(--color-text-link-visited);
+}
+
+/* ── Global focus ring (red instead of purple) ────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ── Buttons ──────────────────────────────────────────────────────────────── */
+button,
+input[type="submit"],
+input[type="button"],
+.solid-button {
+  font-family: var(--font-family-base);
+  font-weight: 500;
+}

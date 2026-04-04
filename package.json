@@ -5,6 +5,6 @@
   "dependencies": {
     "@solid/community-server": "^3.0.0",
     "@solid/community-server-metadata-extender": "^3.0.0",
-    "mashlib": "^1.8.0"
+    "mashlib": "^2.1.5"
   }
 }

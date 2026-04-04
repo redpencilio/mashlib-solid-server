@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>SolidOS — solid.redpencil.io</title>
+
+  <!-- Lexend Deca via Google Fonts (preconnect for performance) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+
+  <!-- SolidOS base styles -->
+  <link href="/mash.css" rel="stylesheet"/>
+
+  <!-- redpencil.io brand overrides (loaded after mash.css to take precedence) -->
+  <link href="/redpencil-theme.css" rel="stylesheet"/>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      panes.runDataBrowser()
+    })
+
+    // solid-ui's sign-up handler calls `(new LoginManager).signup()` which
+    // directly passes `solidproject.org/get_a_pod` to window.open — it never
+    // reads the link's href.  Intercepting window.open before the bundle loads
+    // is the only reliable hook.  We redirect the popup to a full-page
+    // navigation so the user lands on this server's own registration form.
+    ;(function () {
+      var _open = window.open.bind(window)
+      window.open = function (url, name, features) {
+        if (url && /solidproject\.org\/get_a_pod/.test(String(url))) {
+          window.location.href = window.location.origin + '/idp/register/'
+          return null
+        }
+        return _open(url, name, features)
+      }
+    })()
+  </script>
+  <script defer="defer" src="/mashlib.min.js"></script>
+</head>
+<body id="PageBody">
+  <header id="PageHeader" role="banner"></header>
+  <main id="mainContent" tabindex="-1">
+    <div class="TabulatorOutline" id="DummyUUID">
+      <table id="outline">
+        <thead><tr><th id="outlineHeader" scope="col"></th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div id="GlobalDashboard" aria-label="Global Dashboard"></div>
+    </div>
+  </main>
+  <footer id="PageFooter" role="contentinfo"></footer>
+</body>
+</html>

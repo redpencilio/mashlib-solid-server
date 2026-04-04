@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:18-alpine
 
 ENV SPARQL_ENDPOINT http://triplestore:8890/sparql
 ENV CONFIG_FILE config/config-mashlib-files.json
@@ -19,15 +19,14 @@ RUN npm install
 COPY . .
 
 EXPOSE ${PORT}
-CMD [ "npm", "start",\
-    "--",\
-    "-c", "$CONFIG_FILE",\
-    "-s", "$SPARQL_ENDPOINT",\
-    "-b", "$BASE_URL",\
-    "-f", "$ROOT_FILE_PATH",\
-    "-p", "$PORT",\
-    "--emailSenderName", "$EMAIL_SENDER",\
-    "--emailHost", "$EMAIL_HOST",\
-    "--emailPort", "$EMAIL_PORT",\
-    "--emailUser", "$EMAIL_USER",\
-    "--emailPassword", "$EMAIL_PASSWORD"] 
+CMD npm start -- \
+    -c "$CONFIG_FILE" \
+    -s "$SPARQL_ENDPOINT" \
+    -b "$BASE_URL" \
+    -f "$ROOT_FILE_PATH" \
+    -p "$PORT" \
+    --emailSenderName "$EMAIL_SENDER" \
+    --emailHost "$EMAIL_HOST" \
+    --emailPort "$EMAIL_PORT" \
+    --emailUser "$EMAIL_USER" \
+    --emailPassword "$EMAIL_PASSWORD" 
