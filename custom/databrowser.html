@@ -3,28 +3,210 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>SolidOS — solid.redpencil.io</title>
+  <title>solid.redpencil.io</title>
 
-  <!-- Lexend Deca via Google Fonts (preconnect for performance) -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet"/>
 
   <!-- SolidOS base styles -->
   <link href="/mash.css" rel="stylesheet"/>
-
   <!-- redpencil.io brand overrides (loaded after mash.css to take precedence) -->
   <link href="/redpencil-theme.css" rel="stylesheet"/>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      panes.runDataBrowser()
-    })
+  <style>
+    /* ── Shared reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    // solid-ui's sign-up handler calls `(new LoginManager).signup()` which
-    // directly passes `solidproject.org/get_a_pod` to window.open — it never
-    // reads the link's href.  Intercepting window.open before the bundle loads
-    // is the only reliable hook.  We redirect the popup to a full-page
-    // navigation so the user lands on this server's own registration form.
+    html, body { height: 100%; }
+
+    /* ── Marketing page layout (scoped to avoid polluting SolidOS styles) ── */
+    #marketing-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: 'Lexend Deca', -apple-system, sans-serif;
+      background: #ffffff;
+      color: #18181b;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #marketing-page header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 2rem;
+      border-bottom: 1px solid #e4e4e7;
+    }
+
+    .mkt-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      color: #18181b;
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+
+    .mkt-logo-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #FB5353;
+      flex-shrink: 0;
+    }
+
+    #marketing-page nav { display: flex; gap: 0.75rem; align-items: center; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.55rem 1.25rem;
+      border-radius: 0.375rem;
+      font-family: 'Lexend Deca', -apple-system, sans-serif;
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.12s, color 0.12s, border-color 0.12s;
+      border: 1.5px solid transparent;
+      background: transparent;
+    }
+
+    .btn-primary {
+      background: #FB5353;
+      color: #fff !important;
+      border-color: #FB5353;
+    }
+    .btn-primary:hover { background: #e03c3c; border-color: #e03c3c; }
+
+    .btn-outline {
+      background: transparent;
+      color: #18181b;
+      border-color: #e4e4e7;
+    }
+    .btn-outline:hover { border-color: #a1a1aa; }
+
+    #marketing-page main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .mkt-eyebrow {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #FB5353;
+      margin-bottom: 1.25rem;
+    }
+
+    #marketing-page h1 {
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      font-weight: 700;
+      line-height: 1.15;
+      max-width: 18ch;
+      margin-bottom: 1.25rem;
+      color: #18181b;
+    }
+
+    .mkt-subtitle {
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: #52525b;
+      max-width: 46ch;
+      line-height: 1.65;
+      margin-bottom: 2.5rem;
+    }
+
+    .mkt-actions {
+      display: flex;
+      gap: 0.875rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 4rem;
+    }
+
+    .mkt-actions .btn { padding: 0.7rem 1.75rem; font-size: 1rem; }
+
+    .mkt-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 860px;
+    }
+
+    .mkt-card {
+      background: #f9f9fb;
+      border: 1px solid #e4e4e7;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      text-align: left;
+    }
+
+    .mkt-card-icon {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 0.375rem;
+      background: rgba(251, 83, 83, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.875rem;
+      font-size: 1rem;
+    }
+
+    .mkt-card h3 {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: #18181b;
+    }
+
+    .mkt-card p {
+      font-size: 0.875rem;
+      font-weight: 300;
+      color: #52525b;
+      line-height: 1.6;
+    }
+
+    #marketing-page footer {
+      text-align: center;
+      padding: 1.5rem 2rem;
+      border-top: 1px solid #e4e4e7;
+      font-size: 0.8125rem;
+      font-weight: 300;
+      color: #52525b;
+    }
+
+    #marketing-page footer a {
+      color: #52525b;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+  </style>
+
+  <script>
+    // Pre-seed OIDC issuer so the SolidOS login popup defaults to this server.
+    if (!window.localStorage.getItem('loginIssuer')) {
+      window.localStorage.setItem('loginIssuer', window.location.origin + '/');
+    }
+  </script>
+
+  <!--
+    Intercept solid-ui's sign-up window.open call so users land on this
+    server's own registration form instead of solidproject.org/get_a_pod.
+  -->
+  <script>
     ;(function () {
       var _open = window.open.bind(window)
       window.open = function (url, name, features) {
@@ -36,19 +218,140 @@
       }
     })()
   </script>
-  <script defer="defer" src="/mashlib.min.js"></script>
+
+  <!--
+    mashlib.min.js is deferred: it executes after HTML parsing is complete
+    but before DOMContentLoaded fires. window.SolidLogic and window.panes
+    are therefore set before the DOMContentLoaded listener below runs.
+  -->
+  <script defer src="/mashlib.min.js"></script>
 </head>
 <body id="PageBody">
-  <header id="PageHeader" role="banner"></header>
-  <main id="mainContent" tabindex="-1">
-    <div class="TabulatorOutline" id="DummyUUID">
-      <table id="outline">
-        <thead><tr><th id="outlineHeader" scope="col"></th></tr></thead>
-        <tbody></tbody>
-      </table>
-      <div id="GlobalDashboard" aria-label="Global Dashboard"></div>
-    </div>
-  </main>
-  <footer id="PageFooter" role="contentinfo"></footer>
+
+  <!-- ── Marketing page ───────────────────────────────────────────────────── -->
+  <!-- Shown at the root path (/) when the user is not logged in.            -->
+  <div id="marketing-page" style="display:none">
+    <header>
+      <a class="mkt-logo" href="/">
+        <span class="mkt-logo-dot"></span>
+        solid.redpencil.io
+      </a>
+      <nav>
+        <button class="btn btn-outline" id="mkt-login-btn" type="button">Sign in</button>
+        <a class="btn btn-primary" href="/idp/register/">Create pod</a>
+      </nav>
+    </header>
+
+    <main>
+      <span class="mkt-eyebrow">Powered by Solid</span>
+      <h1>Your data, your rules.</h1>
+      <p class="mkt-subtitle">
+        solid.redpencil.io is a Solid pod hosting service by
+        <a href="https://redpencil.io" style="color:#FB5353;text-decoration:none;">redpencil.io</a>.
+        Store your linked data in a pod you control — portable, open, and interoperable
+        with any Solid-compatible application.
+      </p>
+      <div class="mkt-actions">
+        <a class="btn btn-primary" href="/idp/register/">Create a free pod</a>
+        <button class="btn btn-outline" id="mkt-login-btn-hero" type="button">Sign in</button>
+      </div>
+
+      <div class="mkt-features">
+        <div class="mkt-card">
+          <div class="mkt-card-icon">🔐</div>
+          <h3>You own your data</h3>
+          <p>Every pod is a private, access-controlled space. You decide who can read or write.</p>
+        </div>
+        <div class="mkt-card">
+          <div class="mkt-card-icon">🔗</div>
+          <h3>Linked &amp; interoperable</h3>
+          <p>Data is stored as Linked Data — readable by any standards-compliant Solid app.</p>
+        </div>
+        <div class="mkt-card">
+          <div class="mkt-card-icon">🌐</div>
+          <h3>Open standards</h3>
+          <p>Built on the W3C Solid specification, WebID, and LDP — no lock-in.</p>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>
+        Hosted by <a href="https://redpencil.io">redpencil.io</a> &middot;
+        <a href="https://solidproject.org">Solid Project</a> &middot;
+        <a href="/idp/register/">Create a pod</a>
+      </p>
+    </footer>
+  </div>
+
+  <!-- ── SolidOS DataBrowser ──────────────────────────────────────────────── -->
+  <!-- Shown when the user is logged in, or on any non-root path.            -->
+  <div id="databrowser-page" style="display:none">
+    <header id="PageHeader" role="banner"></header>
+    <main id="mainContent" tabindex="-1">
+      <div class="TabulatorOutline" id="DummyUUID">
+        <table id="outline">
+          <thead><tr><th id="outlineHeader" scope="col"></th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <div id="GlobalDashboard" aria-label="Global Dashboard"></div>
+      </div>
+    </main>
+    <footer id="PageFooter" role="contentinfo"></footer>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      /*
+       * authn.checkUser() calls handleIncomingRedirect({ restorePreviousSession: true })
+       * internally, which processes any incoming OIDC authorization code on the URL.
+       * It returns the logged-in WebID string, or null/undefined if not logged in.
+       */
+      window.SolidLogic.authn.checkUser().then(function (webId) {
+        var atRoot = (window.location.pathname === '/' || window.location.pathname === '')
+
+        if (!webId && atRoot) {
+          // Not logged in at the root — show the marketing page.
+          showMarketing()
+        } else {
+          // Logged in (any path), or not logged in but on a resource path —
+          // show the DataBrowser. On resource paths it renders its own login widget.
+          showDataBrowser()
+        }
+      })
+    })
+
+    function showDataBrowser () {
+      document.getElementById('databrowser-page').style.display = ''
+      // runDataBrowser() calls authn.checkUser() internally; calling it after the
+      // first checkUser() has already run is safe — handleIncomingRedirect is
+      // idempotent once the session is established.
+      window.panes.runDataBrowser()
+    }
+
+    function showMarketing () {
+      document.getElementById('marketing-page').style.display = ''
+
+      function doLogin () {
+        /*
+         * Exact replication of solid-ui's loginToIssuer():
+         *   window.localStorage.setItem('loginIssuer', issuerUri)
+         *   await authSession.login({ redirectUrl: locationUrl.href, oidcIssuer: issuerUri })
+         */
+        var issuer = window.localStorage.getItem('loginIssuer')
+                     || (window.location.origin + '/')
+        window.localStorage.setItem('loginIssuer', issuer)
+        var redirectUrl = new URL(window.location.href)
+        redirectUrl.hash = ''
+        window.SolidLogic.authSession.login({
+          redirectUrl: redirectUrl.href,
+          oidcIssuer: issuer
+        })
+      }
+
+      document.getElementById('mkt-login-btn').addEventListener('click', doLogin)
+      document.getElementById('mkt-login-btn-hero').addEventListener('click', doLogin)
+    }
+  </script>
 </body>
 </html>
