@@ -301,25 +301,22 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    function doLogin () {
       /*
-       * authn.checkUser() calls handleIncomingRedirect({ restorePreviousSession: true })
-       * internally, which processes any incoming OIDC authorization code on the URL.
-       * It returns the logged-in WebID string, or null/undefined if not logged in.
+       * Exact replication of solid-ui's loginToIssuer():
+       *   window.localStorage.setItem('loginIssuer', issuerUri)
+       *   await authSession.login({ redirectUrl: locationUrl.href, oidcIssuer: issuerUri })
        */
-      window.SolidLogic.authn.checkUser().then(function (webId) {
-        var atRoot = (window.location.pathname === '/' || window.location.pathname === '')
-
-        if (!webId && atRoot) {
-          // Not logged in at the root — show the marketing page.
-          showMarketing()
-        } else {
-          // Logged in (any path), or not logged in but on a resource path —
-          // show the DataBrowser. On resource paths it renders its own login widget.
-          showDataBrowser()
-        }
+      var issuer = window.localStorage.getItem('loginIssuer')
+                   || (window.location.origin + '/')
+      window.localStorage.setItem('loginIssuer', issuer)
+      var redirectUrl = new URL(window.location.href)
+      redirectUrl.hash = ''
+      window.SolidLogic.authSession.login({
+        redirectUrl: redirectUrl.href,
+        oidcIssuer: issuer
       })
-    })
+    }
 
     function showDataBrowser () {
       document.getElementById('databrowser-page').style.display = ''
@@ -331,27 +328,39 @@
 
     function showMarketing () {
       document.getElementById('marketing-page').style.display = ''
-
-      function doLogin () {
-        /*
-         * Exact replication of solid-ui's loginToIssuer():
-         *   window.localStorage.setItem('loginIssuer', issuerUri)
-         *   await authSession.login({ redirectUrl: locationUrl.href, oidcIssuer: issuerUri })
-         */
-        var issuer = window.localStorage.getItem('loginIssuer')
-                     || (window.location.origin + '/')
-        window.localStorage.setItem('loginIssuer', issuer)
-        var redirectUrl = new URL(window.location.href)
-        redirectUrl.hash = ''
-        window.SolidLogic.authSession.login({
-          redirectUrl: redirectUrl.href,
-          oidcIssuer: issuer
-        })
-      }
-
       document.getElementById('mkt-login-btn').addEventListener('click', doLogin)
       document.getElementById('mkt-login-btn-hero').addEventListener('click', doLogin)
     }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      // Guard against mashlib version differences
+      var authn = (window.SolidLogic && window.SolidLogic.authn)
+                  || (window.solid && window.solid.auth)
+                  || null;
+
+      if (!authn) {
+        showDataBrowser();
+        return;
+      }
+
+      authn.checkUser().then(function (webId) {
+        var atRoot = (window.location.pathname === '/' || window.location.pathname === '');
+        if (webId) {
+          // Logged in — show the DataBrowser.
+          showDataBrowser();
+        } else if (atRoot) {
+          // Not logged in at the root — show the marketing page.
+          showMarketing();
+        } else {
+          // Not logged in at a resource URL (e.g. a pod path after account creation).
+          // Trigger OIDC login so the user can access their private data.
+          // The OIDC redirect will bring them back to this same URL after login.
+          doLogin();
+        }
+      }).catch(function () {
+        showDataBrowser();
+      });
+    });
   </script>
 </body>
 </html>

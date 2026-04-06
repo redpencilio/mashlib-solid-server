@@ -1,10 +1,9 @@
 {
   "scripts": {
-    "start": "npx community-solid-server"
+    "start": "community-solid-server"
   },
   "dependencies": {
-    "@solid/community-server": "^3.0.0",
-    "@solid/community-server-metadata-extender": "^3.0.0",
+    "@solid/community-server": "^7.1.9",
     "mashlib": "^2.1.5"
   }
 }
