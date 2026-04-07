@@ -202,6 +202,16 @@
     }
   </script>
 
+  <!-- Register icon Service Worker early so it is active before mashlib loads -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw-icons.js', { scope: '/' })
+        .catch(function (err) {
+          console.warn('[sw-icons] registration failed:', err);
+        });
+    }
+  </script>
+
   <!--
     Intercept solid-ui's sign-up window.open call so users land on this
     server's own registration form instead of solidproject.org/get_a_pod.

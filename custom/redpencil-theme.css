@@ -163,3 +163,835 @@ input[type="button"],
   font-family: var(--font-family-base);
   font-weight: 500;
 }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   DataBrowser / SolidOS chrome overrides
+   solid-ui sets most of these via inline styles → !important required
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* ── Harden purple-to-cyan from mash.css :root → our red ─────────────────── */
+/* The mash.css :root block also defines hardcoded rgba(124,77,255,...) box-shadows
+   in CSS variables. Our :root block already overrides --color-primary so
+   color-mix() and var() uses become red. These extra lines catch the few
+   selectors that used rgba() literals directly. */
+.socialItem a:focus,
+.focusable-text:focus {
+  background-color: rgba(251, 83, 83, 0.1) !important;
+}
+.QRCode [role="img"]:focus {
+  box-shadow: 0 0 0 2px rgba(251, 83, 83, 0.2) !important;
+}
+.action-button-focus {
+  box-shadow: 0 0 0 2px var(--color-background), 0 0 0 5px rgba(251, 83, 83, 0.25) !important;
+}
+
+/* ── Page header banner ───────────────────────────────────────────────────── */
+#PageHeader {
+  font-family: var(--font-family-base) !important;
+}
+
+/*
+ * The first child div is the flex banner built by solid-ui _createBanner():
+ *   div[style="box-shadow:0px 1px 4px #000; display:flex; justify-content:space-between; …"]
+ *     a[href=pod.uri]           ← logo link
+ *       img[src=solid-emblem]   ← Solid emblem — hidden below
+ *     div                       ← right side (user menu + help menu)
+ */
+#PageHeader > div:first-child {
+  box-shadow: none !important;
+  border-bottom: 1px solid var(--color-border-light) !important;
+  background: #ffffff !important;
+  padding: 0 2rem !important;
+  margin-bottom: 0 !important;
+  min-height: 60px !important;
+  align-items: center !important;
+}
+
+/* ── Logo: replace Solid emblem with redpencil dot + site name ─────────────
+ *
+ * solid-ui creates: <a href=pod> <img src=solid-emblem.svg> </a>
+ * We hide the img and use ::before (dot) + ::after (text) on the <a>.
+ * The <a> has inline style="display:block" — override to flex.
+ */
+#PageHeader > div:first-child > a:first-child {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.6rem !important;
+  text-decoration: none !important;
+  color: var(--color-text) !important;
+  font-family: var(--font-family-base) !important;
+  font-size: 1.05rem !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+  padding: 0 !important;
+}
+
+#PageHeader > div:first-child > a:first-child > img {
+  display: none !important;
+}
+
+#PageHeader > div:first-child > a:first-child::before {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  flex-shrink: 0;
+}
+
+#PageHeader > div:first-child > a:first-child::after {
+  content: 'solid.redpencil.io';
+  color: var(--color-text);
+}
+
+/* ── Header right side: trigger buttons (avatar, help icon) ────────────────
+ *
+ * solid-ui sets width:60px height:60px on the trigger buttons.
+ * Reduce visual weight so they sit flush in our slimmer header.
+ */
+#PageHeader > div:first-child > div {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.25rem !important;
+}
+
+/* The trigger button (avatar / question-mark) */
+#PageHeader button[style*="width: 60px"],
+#PageHeader button[style*="width:60px"] {
+  width: 44px !important;
+  height: 44px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: var(--border-radius-base) !important;
+  transition: background-color 0.12s !important;
+}
+
+#PageHeader button[style*="width: 60px"]:hover,
+#PageHeader button[style*="width:60px"]:hover {
+  background-color: var(--color-hover-bg) !important;
+}
+
+/* Trigger icons */
+#PageHeader button[style*="width: 60px"] img,
+#PageHeader button[style*="width:60px"] img {
+  width: 28px !important;
+  height: 28px !important;
+}
+
+/* All buttons in the header use Lexend Deca */
+#PageHeader button {
+  font-family: var(--font-family-base) !important;
+}
+
+/* Avatar photo ring */
+#PageHeader [style*="border-radius: 50%"] {
+  border: 2px solid var(--color-border) !important;
+}
+
+/* ── User dropdown menus (#loggedInNav, #helperNav) ───────────────────────── */
+#loggedInNav,
+#helperNav {
+  background: #ffffff !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--border-radius-base) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10), 0 1px 4px rgba(0, 0, 0, 0.06) !important;
+  top: 56px !important;
+  overflow: hidden;
+  min-width: 200px;
+}
+
+#loggedInNav li,
+#helperNav li {
+  border-bottom: 1px solid var(--color-border-light) !important;
+  margin: 0 !important;
+}
+
+#loggedInNav li:last-child,
+#helperNav li:last-child {
+  border-bottom: none !important;
+}
+
+/* Base state for menu items — override solid-ui Arial + inline background */
+#loggedInNav li button,
+#loggedInNav li a,
+#helperNav li button,
+#helperNav li a {
+  display: block !important;
+  width: 100% !important;
+  padding: 0.7rem 1rem !important;
+  font-family: var(--font-family-base) !important;
+  font-size: 0.875rem !important;
+  font-weight: 400 !important;
+  color: var(--color-text) !important;
+  text-decoration: none !important;
+  background-color: transparent !important;
+  background-image: none !important;   /* kills the purple→cyan gradient */
+  border: none !important;
+  text-align: left !important;
+  cursor: pointer;
+}
+
+/* Hover — CSS :hover + !important wins over onmouseover inline style */
+#loggedInNav li button:hover,
+#loggedInNav li a:hover,
+#helperNav li button:hover,
+#helperNav li a:hover {
+  background-color: var(--color-hover-bg) !important;
+  background-image: none !important;   /* prevent gradient bleeding through */
+  color: var(--color-primary) !important;
+}
+
+/* ── Pane-switcher tabs ────────────────────────────────────────────────────── */
+/*
+ * solid-ui builds the tab strip entirely with inline styles.
+ * Structure:
+ *   <div style="display:flex">        ← tabsRootElement
+ *     <nav style="margin:0">          ← tabsNavElement
+ *       <ul style="display:flex…">   ← tabContainer
+ *         <li>
+ *           <button style="…background-color:#ddddcc; opacity:50%">  ← unselected
+ *           <button style="…background-color:white">                 ← selected
+ *         </li>
+ *       </ul>
+ *     </nav>
+ *     <main>…</main>                  ← tab content
+ *   </div>
+ *
+ * We override background-color and opacity on ALL tab buttons so the palette
+ * changes, then let solid-ui's opacity:50% still carry the selected/unselected
+ * distinction (50% = unselected, 100% = selected).
+ */
+
+/* Tab nav area background */
+#outline nav,
+.TabulatorOutline nav,
+#outline > div > nav {
+  background: #ffffff !important;
+  border-right: 1px solid var(--color-border) !important;
+}
+
+/* All pane tab buttons */
+#outline nav ul li button,
+.TabulatorOutline nav ul li button {
+  background-color: #ffffff !important;
+  color: var(--color-text-secondary) !important;
+  font-family: var(--font-family-base) !important;
+  font-size: 0.7rem !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  border-radius: 0 !important;
+  border: none !important;
+  border-bottom: 1px solid var(--color-border-light) !important;
+  padding: 0.85rem 0.75rem !important;
+  transition: background-color 0.1s, color 0.1s !important;
+}
+
+#outline nav ul li button:hover,
+.TabulatorOutline nav ul li button:hover {
+  background-color: var(--color-primary-alpha-light) !important;
+  color: var(--color-primary) !important;
+}
+
+/* Selected tab — red left stripe + light red tint */
+#outline nav ul li button:not([style*="opacity"]),
+.TabulatorOutline nav ul li button:not([style*="opacity"]) {
+  background-color: var(--color-primary-alpha-light) !important;
+  color: var(--color-primary) !important;
+  box-shadow: inset 4px 0 0 var(--color-primary) !important;
+  font-weight: 700 !important;
+}
+
+/* Tab content main area */
+#outline nav + main,
+#outline > div > main {
+  background: #ffffff;
+}
+
+/* ── Icons inside tab buttons ─────────────────────────────────────────────── */
+/*
+ * Phosphor SVGs are loaded via <img> — CSS 'color' does NOT affect SVG fill
+ * when the SVG is in an <img> tag (isolated document, no cascade).
+ * Use CSS filter to tint the icons:
+ *   - All tabs:     opacity(0.55)  → muted grey appearance
+ *   - solid-ui sets opacity:50% on the button for unselected → doubly muted
+ *   - Selected tab: full opacity + red filter
+ *   - Hover:        full opacity
+ */
+#outline nav ul li button img,
+.TabulatorOutline nav ul li button img {
+  width: 1.375rem !important;
+  height: 1.375rem !important;
+  display: block !important;
+  margin: 0 auto 0.3rem !important;
+  /* Muted grey by default */
+  filter: opacity(0.55) !important;
+}
+
+#outline nav ul li button:hover img,
+.TabulatorOutline nav ul li button:hover img {
+  filter: opacity(1) !important;
+}
+
+/* Selected tab icon → tint black SVG to brand red (#FB5353)
+ * Filter chain: black→red using brightness(0) + colour shift */
+#outline nav ul li button:not([style*="opacity"]) img,
+.TabulatorOutline nav ul li button:not([style*="opacity"]) img {
+  filter: brightness(0) saturate(100%)
+          invert(47%) sepia(68%) saturate(900%) hue-rotate(314deg)
+          brightness(108%) !important;
+}
+
+/* ── Solid-UI widget buttons (buttonStyle) ────────────────────────────────── */
+/*
+ * solid-ui's buttonStyle = 'background-color:#fff; border:.01em solid white'
+ * These buttons are invisible on white pages. We target them by the inline-style
+ * pattern and give them a visible border.
+ */
+button[style*="border: .01em solid white"],
+button[style*="border:.01em solid white"] {
+  border-color: var(--color-border) !important;
+  color: var(--color-text) !important;
+  font-family: var(--font-family-base) !important;
+  border-radius: var(--border-radius-base) !important;
+}
+
+button[style*="border: .01em solid white"]:hover,
+button[style*="border:.01em solid white"]:hover {
+  background-color: var(--color-section-bg) !important;
+  border-color: var(--color-border-dark) !important;
+}
+
+/* signInAndUpButtonStyle also uses solid white border */
+button[style*="border: .05em solid white"],
+button[style*="border:.05em solid white"] {
+  border-color: var(--color-border) !important;
+  border-radius: var(--border-radius-base) !important;
+  font-family: var(--font-family-base) !important;
+}
+
+/* ── Forms inside panes ───────────────────────────────────────────────────── */
+#outline input[type="text"],
+#outline input[type="email"],
+#outline input[type="url"],
+#outline input[type="password"],
+#outline input[type="search"],
+#outline textarea,
+#outline select,
+.pane input[type="text"],
+.pane input[type="email"],
+.pane input[type="url"],
+.pane input[type="password"],
+.pane textarea,
+.pane select {
+  font-family: var(--font-family-base) !important;
+  font-size: 0.9375rem !important;
+  border: 1.5px solid var(--color-border) !important;
+  border-radius: var(--border-radius-base) !important;
+  padding: 0.45rem 0.7rem !important;
+  color: var(--color-text) !important;
+  background: #ffffff !important;
+  outline: none !important;
+}
+
+#outline input:focus,
+#outline textarea:focus,
+#outline select:focus,
+.pane input:focus,
+.pane textarea:focus,
+.pane select:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 3px rgba(251, 83, 83, 0.12) !important;
+}
+
+/* ── Submit / action buttons inside panes ────────────────────────────────── */
+#outline button[type="submit"],
+#outline input[type="submit"],
+.pane button[type="submit"],
+.pane input[type="submit"] {
+  background: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color: #ffffff !important;
+  font-family: var(--font-family-base) !important;
+  font-weight: 500 !important;
+  border-radius: var(--border-radius-base) !important;
+  padding: 0.5rem 1.25rem !important;
+  cursor: pointer;
+}
+
+#outline button[type="submit"]:hover,
+#outline input[type="submit"]:hover,
+.pane button[type="submit"]:hover,
+.pane input[type="submit"]:hover {
+  background: #e03c3c !important;
+  border-color: #e03c3c !important;
+}
+
+/* ── Profile pane ─────────────────────────────────────────────────────────── */
+
+/* Each profileSection becomes a visible card */
+.profile-grid .profileSection {
+  background: var(--color-section-bg) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--border-radius-base) !important;
+  padding: 1.25rem 1.5rem !important;
+  margin-bottom: 0.75rem !important;
+}
+
+/* Section headings */
+.profile-grid .profileSection h3,
+.profile-grid .profileSection h4 {
+  font-family: var(--font-family-base) !important;
+  font-weight: 600 !important;
+  color: var(--color-text) !important;
+  margin: 0 0 0.75rem !important;
+}
+
+/* Field-row borders (hoverControl): soften from rgb(136,136,136) to our zinc */
+.profile-form .hoverControl:not(:has(> img:first-child)) {
+  border-color: var(--color-border) !important;
+  border-radius: var(--border-radius-base) !important;
+  background: #ffffff !important;
+}
+
+/* Avatar / profile photo */
+.profile-photo img,
+img.solid-profile-photo {
+  border-radius: 50%;
+  border: 3px solid var(--color-border);
+}
+
+/* ── Global SolidOS pane font ─────────────────────────────────────────────── */
+#outline,
+.TabulatorOutline {
+  font-family: var(--font-family-base);
+  color: var(--color-text);
+}
+
+#outline a,
+.TabulatorOutline a {
+  color: var(--color-primary);
+  font-weight: 400;
+}
+
+#outline a:hover,
+.TabulatorOutline a:hover {
+  color: #e03c3c;
+  text-decoration: underline;
+}
+
+/* ── Icon tinting (Phosphor SVGs use fill="currentColor") ────────────────── */
+/*
+ * Icons are now served from /icons/ as Phosphor SVGs.
+ * They use fill="currentColor" so the CSS `color` property controls colour.
+ * Default: zinc-500.  Hover inherits the button/link colour automatically.
+ * The SW intercepts solidos.github.io requests → /icons/ so both URL forms
+ * are styled the same way.
+ */
+img[src^="/icons/"],
+img[src*="solidos.github.io/solid-ui/src/icons/"] {
+  color: var(--color-text-secondary);
+}
+
+button:hover > img[src^="/icons/"],
+button:hover > img[src*="solidos.github.io/solid-ui/src/icons/"],
+a:hover > img[src^="/icons/"],
+a:hover > img[src*="solidos.github.io/solid-ui/src/icons/"] {
+  color: var(--color-primary);
+}
+
+/* ── Data tables ──────────────────────────────────────────────────────────── */
+table.results th {
+  background: var(--color-table-header-bg);
+  font-family: var(--font-family-base);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-secondary);
+  border-bottom: 1px solid var(--color-border);
+}
+
+table.results td {
+  font-family: var(--font-family-base);
+  font-size: 0.9rem;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+table.results tr:hover td {
+  background: var(--color-hover-bg);
+}
+
+/* ── Fieldsets in preference / settings panes ─────────────────────────────── */
+#outline fieldset {
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--border-radius-base) !important;
+  padding: 1rem 1.25rem !important;
+  margin-bottom: 1rem !important;
+}
+
+#outline fieldset legend {
+  font-family: var(--font-family-base) !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  color: var(--color-text-secondary) !important;
+  padding: 0 0.4rem !important;
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   JS inline-style overrides
+   solid-ui/mashlib set style attributes directly via setAttribute('style',…)
+   and onmouseover/onmouseout handlers.  CSS !important beats inline styles
+   (without !important) in the cascade.  We target the hardcoded colour values
+   as attribute-selector fingerprints so the rules fire precisely when JS has
+   written its string.
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/*
+ * ── .actionButton / UI.widgets.button() ──────────────────────────────────
+ *
+ * solid-ui widgets/buttons.js creates buttons via UI.widgets.button().
+ * With needsBorder:true the JS hover handlers set the full style string:
+ *
+ *  mouseout  → background-color:#ffffff; color:#7c4dff; border-color:#7c4dff;
+ *               font-family:Raleway,Roboto,sans-serif; …
+ *  mouseover → background-color:#7c4dff; color:#ffffff; border-color:#7c4dff;
+ *               font-family:Raleway,Roboto,sans-serif; …
+ *
+ * Without border the secondary variant uses #01c9ea (cyan).
+ * We match on the hardcoded color strings and replace the whole palette.
+ */
+
+/*
+ * ── .btn-primary class ────────────────────────────────────────────────────
+ *
+ * Promoted to !important so it wins over any JS-set inline style.
+ * Must come BEFORE the attribute selectors below so that when both match,
+ * the higher-specificity attribute rules don't bleed onto .btn-primary.
+ */
+.btn-primary,
+button.btn-primary[style] {          /* [style] raises specificity to 0-1-1 */
+  background-color: var(--color-primary) !important;
+  color: #ffffff !important;
+  border-color: var(--color-primary) !important;
+  font-family: var(--font-family-base) !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+button.btn-primary[style]:hover {
+  background-color: #e03c3c !important;
+  border-color: #e03c3c !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 4px rgba(251, 83, 83, 0.25) !important;
+}
+
+.btn-outline {
+  border-color: var(--color-primary) !important;
+  color: var(--color-primary) !important;
+  font-family: var(--font-family-base) !important;
+}
+
+.btn-outline:hover {
+  background-color: var(--color-primary) !important;
+  color: #ffffff !important;
+}
+
+/* Default (mouseout) state: white bg / purple text — exclude .btn-primary
+   so we don't turn white-on-red text into red-on-red */
+button:not(.btn-primary)[style*="color: #7c4dff"],
+button:not(.btn-primary)[style*="color:#7c4dff"] {
+  color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  font-family: var(--font-family-base) !important;
+}
+
+/* Hover (mouseover) state: purple bg / white text */
+button:not(.btn-primary)[style*="background-color: #7c4dff"],
+button:not(.btn-primary)[style*="background-color:#7c4dff"],
+button:not(.btn-primary)[style*="background-color: #9f7dff"],
+button:not(.btn-primary)[style*="background-color:#9f7dff"] {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color: #ffffff !important;
+  font-family: var(--font-family-base) !important;
+}
+
+/* Secondary cyan variant — default state */
+button:not(.btn-primary)[style*="color: #01c9ea"],
+button:not(.btn-primary)[style*="color:#01c9ea"] {
+  color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  font-family: var(--font-family-base) !important;
+}
+
+/* Secondary cyan variant — hover state */
+button:not(.btn-primary)[style*="background-color: #01c9ea"],
+button:not(.btn-primary)[style*="background-color:#01c9ea"],
+button:not(.btn-primary)[style*="background-color: #37cde6"],
+button:not(.btn-primary)[style*="background-color:#37cde6"] {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color: #ffffff !important;
+  font-family: var(--font-family-base) !important;
+}
+
+/* Font-family fix for all widget buttons (Raleway / Arial) */
+button[style*="font-family: Raleway"],
+button[style*="font-family:Raleway"],
+button[style*="font-family: Arial"],
+button[style*="font-family:Arial"] {
+  font-family: var(--font-family-base) !important;
+}
+
+/*
+ * ── #loggedInNav / #helperNav onmouseover gradient ────────────────────────
+ *
+ * solid-ui header/index.js:
+ *   mouseover → full style string + background-image:linear-gradient(#7C4DFF…)
+ *   mouseout  → full style string (no background-image)
+ *
+ * Our :hover !important rules already cancel this.  The attribute selector
+ * below catches the moment JS has written the gradient into the style attr
+ * (which happens at the same time CSS :hover is active, so both apply and
+ * our !important wins).
+ *
+ * Extra belt-and-suspenders: kill the gradient any time it appears on any
+ * element inside the header menus.
+ */
+#loggedInNav [style*="linear-gradient"],
+#helperNav [style*="linear-gradient"] {
+  background-image: none !important;
+  background-color: var(--color-hover-bg) !important;
+  color: var(--color-primary) !important;
+}
+
+/*
+ * ── nav > ul > li > button tab selection (tabs.js) ────────────────────────
+ *
+ * tabs.js replaces the entire style attribute on click:
+ *   selected   → style has no "opacity" substring
+ *   unselected → style contains "opacity: 50%"
+ *
+ * Our existing :not([style*="opacity"]) rule handles the selected state.
+ * The unselected rule below keeps the zinc palette regardless of what
+ * backgroundColor solid-ui passes in.
+ */
+#outline nav ul li button[style*="opacity"],
+.TabulatorOutline nav ul li button[style*="opacity"] {
+  background-color: var(--color-nav-block-bg) !important;
+  color: var(--color-text) !important;
+  font-family: var(--font-family-base) !important;
+}
+
+/*
+ * ── Facebook-blue links (#3B5998) ─────────────────────────────────────────
+ *
+ * solid-ui sets style="color:#3B5998; text-decoration:none" on social links.
+ */
+a[style*="#3B5998"],
+a[style*="#3b5998"] {
+  color: var(--color-primary) !important;
+}
+
+/*
+ * ── Misc hardcoded backgrounds ────────────────────────────────────────────
+ */
+/* light-purple container background (#ddddff) */
+[style*="background-color: #ddddff"],
+[style*="background-color:#ddddff"] {
+  background-color: var(--color-section-bg) !important;
+  border-radius: var(--border-radius-base) !important;
+}
+
+/*
+ * ── "Your storage" tree view (folder pane / outliner) ─────────────────────
+ *
+ * mashlib's folder pane creates:
+ *   div.instancePane[style="border-top:solid 1px #777; border-bottom:…"]
+ *     table
+ *       tbody
+ *         tr
+ *           td (predicate / empty — gets min-width:3em inline)
+ *           td.obj (object cell)
+ *             img[title="View details."]   ← expand toggle (tbl-expand-trans.png)
+ *             img[title="Hide details."]   ← collapse toggle (tbl-collapse.png)
+ *             <content>
+ *
+ * Strategy:
+ *  1. Override the inline gray borders on .instancePane via !important.
+ *  2. Give the container a modern card look.
+ *  3. Style table rows with hover + proper spacing.
+ *  4. Widen the first (predicate) cell; increase expand-icon click area.
+ *  5. Use a CSS filter to tint the expand/collapse PNGs to match the theme.
+ */
+
+/* ── Container ────────────────────────────────────────────────────────────── */
+div.instancePane {
+  border-top: none !important;
+  border-bottom: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  background: var(--color-background) !important;
+}
+
+/* The whole storage section wraps inside the pane content area */
+div.instancePane > table {
+  width: 100%;
+  border-collapse: collapse !important;
+  font-family: var(--font-family-base) !important;
+  font-size: 0.9rem !important;
+}
+
+/* ── Rows ─────────────────────────────────────────────────────────────────── */
+div.instancePane > table tr {
+  border-bottom: 1px solid var(--color-border-light) !important;
+  transition: background 0.08s !important;
+}
+
+div.instancePane > table tr:last-child {
+  border-bottom: none !important;
+}
+
+div.instancePane > table tr:hover {
+  background-color: var(--color-hover-bg) !important;
+}
+
+/* ── Cells ────────────────────────────────────────────────────────────────── */
+
+/* First cell: predicate label (or empty spacer in folder pane) */
+div.instancePane > table td:first-child {
+  min-width: 2.5rem !important;
+  width: 2.5rem !important;
+  padding: 0 !important;
+  vertical-align: middle !important;
+}
+
+/* Object cell: contains expand icon + resource link/label */
+div.instancePane > table td.obj {
+  padding: 0.35rem 0.5rem !important;
+  vertical-align: middle !important;
+}
+
+/* All cells: remove any stray borders */
+div.instancePane > table td {
+  border: none !important;
+}
+
+/* ── Expand / collapse toggle images ─────────────────────────────────────── */
+/*
+ * sw-icons.js replaces tbl-expand-trans.png / tbl-collapse.png with
+ * Phosphor caret SVGs (served with Content-Type: image/svg+xml).
+ *
+ * Targeting note: AJARImage() is called with undefined as the title
+ * param, so these <img> elements have NO title attribute — the mash.css
+ * img[title="Hide details."] selector is aspirational, not actual.
+ * We target by src substring instead.
+ *
+ * fill="currentColor" does NOT inherit CSS color when SVG is in <img>;
+ * the SVG is an isolated document and renders black by default.
+ * Use CSS filter to tint.
+ */
+div.instancePane img[src*="tbl-expand-trans"],
+div.instancePane img[src*="tbl-collapse"],
+div.instancePane img[src*="tbl-more-trans"],
+div.instancePane img[src*="tbl-shrink"] {
+  /* Larger, square hit target — tappable without pixel-hunting */
+  width: 14px !important;
+  height: 14px !important;
+  padding: 0.4rem !important;
+  box-sizing: content-box !important;
+  margin: 0 !important;
+  cursor: pointer !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
+  border-radius: var(--border-radius-base) !important;
+  /* Tint black SVG → muted grey */
+  filter: opacity(0.45) !important;
+  transition: filter 0.12s, background-color 0.12s !important;
+}
+
+div.instancePane img[src*="tbl-expand-trans"]:hover,
+div.instancePane img[src*="tbl-collapse"]:hover,
+div.instancePane img[src*="tbl-more-trans"]:hover,
+div.instancePane img[src*="tbl-shrink"]:hover {
+  /* Full opacity on hover + light-red pill makes the state change visible */
+  filter: opacity(1) !important;
+  background-color: var(--color-primary-alpha-light) !important;
+}
+
+/* ── Links inside the tree ────────────────────────────────────────────────── */
+div.instancePane a {
+  color: var(--color-text) !important;
+  text-decoration: none !important;
+  font-weight: 400 !important;
+}
+
+div.instancePane a:hover {
+  color: var(--color-primary) !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px !important;
+}
+
+/* Container name links (folders) — slightly bolder */
+div.instancePane a[href$="/"] {
+  font-weight: 500 !important;
+}
+
+/*
+ * ── dataContentPane (property detail view) ────────────────────────────────
+ *
+ * Shown when a resource in the outliner is expanded to show its triples.
+ * mash.css applies a thin purple-ish border; we neutralise it.
+ */
+div.dataContentPane {
+  border-color: var(--color-border-light) !important;
+  border-radius: var(--border-radius-base) !important;
+  background: var(--color-section-bg) !important;
+  padding: 0.75rem !important;
+  margin-top: 0.375rem !important;
+  margin-bottom: 0.375rem !important;
+}
+
+div.dataContentPane td.pred {
+  color: var(--color-text-secondary) !important;
+  font-size: 0.8125rem !important;
+  font-family: var(--font-family-base) !important;
+  min-width: 10em !important;
+  padding-right: 1rem !important;
+}
+
+div.dataContentPane td.pred a {
+  color: var(--color-text-secondary) !important;
+  font-weight: 400 !important;
+}
+
+div.dataContentPane a {
+  color: var(--color-primary) !important;
+  font-weight: 400 !important;
+}
+
+div.dataContentPane a:hover {
+  color: var(--color-text-link-hover) !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px !important;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  #loggedInNav,
+  #helperNav {
+    width: 180px !important;
+  }
+
+  .profile-grid .profileSection {
+    padding: 1rem !important;
+  }
+}

@@ -1,8 +1,7 @@
 /*
  * idp-theme.css
- * redpencil.io brand overrides for Community Solid Server IDP pages
- * (login, register, forgot-password, reset-password, consent).
- * Replaces the default Raleway + purple-gradient theme.
+ * redpencil.io brand overrides for Community Solid Server IDP pages.
+ * Served at /.well-known/css/styles/main.css, loaded by every IDP page.
  */
 
 @import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap');
@@ -57,36 +56,31 @@ header {
   border-bottom: 1px solid var(--border);
   margin: 0;
   background: var(--bg);
-
-  /* default.json uses a grid; reset it */
   grid-template-columns: none;
   grid-gap: 0;
   gap: 0;
 }
 
 /* Hide the Solid logo image */
-header > a:first-child {
-  display: none;
-}
+header > a:first-child { display: none; }
 
 /*
- * Replace "Community Solid Server" with "solid.redpencil.io" using CSS.
- * The text is hidden with color: transparent; the pseudo-elements inject
- * a red dot + the real site name.
+ * Replace "Community Solid Server" with "solid.redpencil.io" via CSS.
+ * The text is hidden; pseudo-elements inject a red dot + site name.
  */
 header h1 {
   margin: 0;
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  color: transparent;           /* hide the original text */
+  color: transparent;
   font-size: 1.05rem;
   font-weight: 600;
   line-height: 1;
   letter-spacing: normal;
 }
 
-header h1::before {             /* red dot */
+header h1::before {
   content: '';
   display: block;
   width: 10px;
@@ -96,7 +90,7 @@ header h1::before {             /* red dot */
   flex-shrink: 0;
 }
 
-header h1::after {              /* site name */
+header h1::after {
   content: 'solid.redpencil.io';
   color: var(--text);
   font-size: 1.05rem;
@@ -121,23 +115,30 @@ main h1 {
 }
 
 main h2 {
-  margin: 1em 0 0.25em;
+  margin: 0 0 0.375rem;
   font-size: 1rem;
   font-weight: 600;
+  color: var(--text);
+}
+
+main h3 {
+  margin: 1.25rem 0 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   color: var(--text-2);
 }
 
 main p {
-  margin: 0.75em 0;
+  margin: 0.5em 0;
   color: var(--text-2);
   line-height: 1.65;
 }
 
-main h1 + p,
-main h2 + p { margin-top: 0.25em; }
+main h1 + p { margin-top: 0; }
 
-/* ── Form card ──────────────────────────────────────────────────────────────── */
-/* Wrap the main content area in a card */
+/* ── Form card — wraps narrow form pages ────────────────────────────────────── */
 #authenticating,
 #not-authenticating,
 #input-partial,
@@ -167,22 +168,17 @@ fieldset > legend {
   color: var(--text-2);
 }
 
-fieldset > legend + p {
-  margin: 0 0 0.75em;
-}
+fieldset > legend + p { margin: 0 0 0.75em; }
+fieldset > p { margin: 0 0 0.75em; color: var(--text-2); }
 
-fieldset ol {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
+fieldset ol { list-style: none; margin: 0; padding: 0; }
 
 fieldset ol li:not(.checkbox, .radio) {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
   margin-bottom: 0.875rem;
-  grid-template-columns: none;   /* override default grid layout */
+  grid-template-columns: none;
   grid-gap: 0;
 }
 
@@ -203,10 +199,7 @@ fieldset li.radio > label {
 }
 
 fieldset li.checkbox > label > input,
-fieldset li.radio > label > input {
-  margin: 0;
-  accent-color: var(--red);
-}
+fieldset li.radio > label > input { margin: 0; accent-color: var(--red); }
 
 /* ── Inputs ─────────────────────────────────────────────────────────────────── */
 input[type="email"],
@@ -236,8 +229,11 @@ input[type="number"]:focus {
   box-shadow: 0 0 0 3px rgba(251, 83, 83, 0.12);
 }
 
-/* ── Button ─────────────────────────────────────────────────────────────────── */
-button {
+/* ── Buttons ────────────────────────────────────────────────────────────────── */
+
+/* Primary — submit actions */
+button,
+button[type="submit"] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -250,50 +246,227 @@ button {
   font-size: 0.9375rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.12s, border-color 0.12s;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
 }
 
-button:hover {
+button:hover,
+button[type="submit"]:hover {
   background: var(--red-dk);
   border-color: var(--red-dk);
 }
 
+/* Secondary — navigation / cancel actions */
+button[type="button"] {
+  background: transparent;
+  color: var(--text-2);
+  border-color: var(--border);
+}
+
+button[type="button"]:hover {
+  background: var(--bg-2);
+  border-color: var(--text-2);
+  color: var(--text);
+}
+
+/* Alternate — tertiary / destructive navigation */
+button.alternate {
+  background: transparent;
+  color: var(--text-2);
+  border-color: transparent;
+  font-size: 0.875rem;
+  padding: 0.5rem 0.875rem;
+}
+
+button.alternate:hover {
+  background: var(--bg-2);
+  border-color: var(--border);
+  color: var(--text);
+}
+
 /* ── Form actions ───────────────────────────────────────────────────────────── */
-form p.actions {
-  margin: 1.25rem 0 1rem;
+form p.actions,
+p.actions {
+  margin: 1.25rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
 }
 
 form p.error {
   color: #B00020;
   font-size: 0.875rem;
   font-weight: 500;
-  min-height: 1.5em;
+  min-height: 1.25em;
   margin: 0 0 0.75rem;
 }
 
-form ul.actions {
+p.error {
+  color: #B00020;
+  font-size: 0.875rem;
+  font-weight: 500;
+  min-height: 1.25em;
+  margin: 0 0 0.75rem;
+}
+
+form ul.actions,
+ul.actions {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 1.25rem 0 0;
   display: flex;
-  gap: 1.25rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
 }
 
-form ul.actions > li {
-  display: inline;
-  margin: 0;
-}
+form ul.actions > li,
+ul.actions > li { display: contents; }
 
 /* ── Links ──────────────────────────────────────────────────────────────────── */
-a {
+a, a.link {
   color: var(--red);
   font-weight: 500;
   text-decoration: none;
 }
 
-a:hover {
+a:hover, a.link:hover {
   color: var(--red-dk);
   text-decoration: underline;
+}
+
+/* ── Account dashboard ──────────────────────────────────────────────────────── */
+
+/* Wider layout for the account page (identified by #logout button) */
+main:has(#logout) {
+  justify-content: flex-start;
+  padding-top: 2.5rem;
+  align-items: stretch;
+  max-width: 680px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+main:has(#logout) h1 { margin-bottom: 1.75rem; }
+
+/* Each account section as a card */
+#passwordLogins,
+#pods,
+#webIds,
+#clientCredentials {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+#passwordLogins h2,
+#pods h2,
+#webIds h2,
+#clientCredentials h2 {
+  margin: 0 0 0.25rem;
+}
+
+#passwordLogins > p,
+#pods > p,
+#webIds > p,
+#clientCredentials > p {
+  margin: 0 0 0.75rem;
+  font-size: 0.875rem;
+}
+
+#passwordLogins > a,
+#pods > a,
+#webIds > a,
+#clientCredentials > a {
+  font-size: 0.875rem;
+}
+
+/* Lists of entries in account sections */
+#passwordLoginEntries,
+#podEntries,
+#webIdEntries,
+#clientCredentialsEntries {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+}
+
+#passwordLoginEntries > li,
+#podEntries > li,
+#webIdEntries > li,
+#clientCredentialsEntries > li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0;
+  border-top: 1px solid var(--border);
+  font-size: 0.9rem;
+  color: var(--text);
+  flex-wrap: wrap;
+}
+
+#passwordLoginEntries > li:first-child,
+#podEntries > li:first-child,
+#webIdEntries > li:first-child,
+#clientCredentialsEntries > li:first-child { border-top: none; }
+
+/* Small delete / update links within account lists */
+#passwordLoginEntries a,
+#podEntries a,
+#webIdEntries a,
+#clientCredentialsEntries a {
+  font-size: 0.8125rem;
+}
+
+/* Pod-settings owner list */
+#owners {
+  list-style: none;
+  margin: 0.5rem 0 1rem;
+  padding: 0;
+}
+
+#owners > li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0;
+  border-top: 1px solid var(--border);
+  font-size: 0.9rem;
+  flex-wrap: wrap;
+}
+
+#owners > li:first-child { border-top: none; }
+
+/* ── Consent page ───────────────────────────────────────────────────────────── */
+
+/* Client info term/definition list */
+dl#client {
+  margin: 0.75rem 0 1.25rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 1rem;
+  row-gap: 0.25rem;
+}
+
+dl#client dt {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-2);
+}
+
+dl#client dd {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text);
+  word-break: break-all;
+}
+
+/* Stack the four consent buttons cleanly */
+#mainForm > p.actions {
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
 /* ── Footer ─────────────────────────────────────────────────────────────────── */
@@ -304,7 +477,7 @@ footer {
   font-size: 0.8125rem;
   font-weight: 300;
   color: var(--text-2);
-  margin-top: 0;
+  margin-top: auto;
 }
 
 footer a {
@@ -316,7 +489,7 @@ footer a {
 
 footer a:hover { color: var(--text); }
 
-/* ── Typography ─────────────────────────────────────────────────────────────── */
+/* ── Typography helpers ─────────────────────────────────────────────────────── */
 strong { font-weight: 600; }
 
 code {
@@ -327,42 +500,27 @@ code {
   padding: 0.1em 0.35em;
 }
 
-ul {
-  margin: 0.75em 0;
-}
+pre { overflow-x: auto; }
+
+ul { margin: 0.75em 0; }
 
 li {
-  margin: 0.5em 0;
+  margin: 0.35em 0;
   color: var(--text-2);
   line-height: 1.6;
 }
 
 li p { margin: 0; }
 
-ul > li { list-style-type: square; }
+/* Container listing (resource browser) */
+ul.container > li { list-style-type: none; margin: 0.25em 0; }
+ul.container > li.container > a { font-weight: 800; }
 
-ul > li::marker { color: var(--red); }
-
-ul ul, ol ul {
-  margin-top: 0;
-  padding-left: 1em;
-}
-
-pre { overflow-x: auto; }
-
-/* ── Animation (same as default) ───────────────────────────────────────────── */
+/* ── Animation (preserve CSS default behaviour) ─────────────────────────────── */
 .hidden { display: none; }
 
-form.loaded * {
-  max-height: 1000px;
-  transition: max-height 0.2s;
-}
-
-form .hidden {
-  display: block;
-  max-height: 0;
-  overflow: hidden;
-}
+form.loaded * { max-height: 1000px; transition: max-height 0.2s; }
+form .hidden { display: block; max-height: 0; overflow: hidden; }
 
 /* ── Breadcrumbs ────────────────────────────────────────────────────────────── */
 ol.breadcrumbs {
@@ -380,10 +538,7 @@ ol.breadcrumbs > li > a {
   white-space: nowrap;
 }
 
-ol.breadcrumbs > li > a:hover {
-  color: var(--red);
-  text-decoration: none;
-}
+ol.breadcrumbs > li > a:hover { color: var(--red); text-decoration: none; }
 
 ol.breadcrumbs > li:not(:last-child)::after {
   padding: 0 0.25em;
@@ -392,31 +547,24 @@ ol.breadcrumbs > li:not(:last-child)::after {
   color: var(--text-2);
 }
 
-ol.breadcrumbs > li:last-child {
-  font-weight: 500;
-  color: var(--red);
-}
-
+ol.breadcrumbs > li:last-child { font-weight: 500; color: var(--red); }
 ol.breadcrumbs > li:only-child { display: none; }
-
-/* ── Container listing ──────────────────────────────────────────────────────── */
-ul.container > li {
-  margin: 0.25em 0;
-  list-style-type: none;
-}
-
-ul.container > li.container > a { font-weight: 800; }
 
 /* ── Responsive ─────────────────────────────────────────────────────────────── */
 @media (max-width: 540px) {
   main { padding: 2rem 1rem; }
 
+  main:has(#logout) { padding: 1.5rem 1rem; }
+
   #authenticating,
   #not-authenticating,
   #input-partial,
-  #response-partial {
-    padding: 1.5rem;
-  }
+  #response-partial { padding: 1.5rem; }
+
+  #passwordLogins,
+  #pods,
+  #webIds,
+  #clientCredentials { padding: 1rem; }
 
   header { padding: 1rem 1.25rem; }
 }
