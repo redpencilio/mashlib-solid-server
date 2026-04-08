@@ -355,8 +355,11 @@
 
       authn.checkUser().then(function (webId) {
         var atRoot = (window.location.pathname === '/' || window.location.pathname === '');
-        if (webId) {
-          // Logged in — show the DataBrowser.
+        if (webId && atRoot) {
+          // Logged in at root — go to the account dashboard.
+          window.location.replace('/.account/');
+        } else if (webId) {
+          // Logged in at a resource URL — show the DataBrowser.
           showDataBrowser();
         } else if (atRoot) {
           // Not logged in at the root — show the marketing page.
