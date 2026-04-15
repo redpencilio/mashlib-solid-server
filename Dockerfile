@@ -12,6 +12,14 @@ RUN npm install
 
 COPY . .
 
+# Bake default config and templates at their expected absolute paths.
+# Operators can override either directory via volume mounts:
+#   /config/          CSS configuration files
+#   /templates/       Pod and root Solid templates
+#   /usr/app/custom/  HTML/CSS/JS branding assets
+COPY config/ /config/
+COPY templates/ /templates/
+
 EXPOSE ${PORT}
 CMD npm start -- \
     -c "$CONFIG_FILE" \
