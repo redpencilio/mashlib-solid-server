@@ -365,10 +365,11 @@
           // Not logged in at the root — show the marketing page.
           showMarketing();
         } else {
-          // Not logged in at a resource URL (e.g. a pod path after account creation).
-          // Trigger OIDC login so the user can access their private data.
-          // The OIDC redirect will bring them back to this same URL after login.
-          doLogin();
+          // Not logged in at a resource URL — show the DataBrowser.
+          // Mashlib will fetch the resource as a public (unauthenticated) agent,
+          // which works fine for publicly-readable resources (e.g. profile cards).
+          // Private resources will prompt the user to log in via Mashlib's own UI.
+          showDataBrowser();
         }
       }).catch(function () {
         showDataBrowser();
