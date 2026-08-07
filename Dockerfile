@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:24
 
 ENV SPARQL_ENDPOINT http://triplestore:8890/sparql
 ENV CONFIG_FILE config/config-mashlib-files.json

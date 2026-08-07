@@ -1,10 +1,10 @@
 {
+  "name": "redpencil-solid-server",
   "scripts": {
     "start": "npx community-solid-server"
   },
   "dependencies": {
-    "@solid/community-server": "^3.0.0",
-    "@solid/community-server-metadata-extender": "^3.0.0",
-    "mashlib": "^1.8.0"
+    "@solid/community-server": "^7.2.0",
+    "mashlib": "^2.2.2"
   }
 }
