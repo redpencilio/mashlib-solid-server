@@ -1,13 +1,13 @@
 steps:
-  push-feature-build:
+  build-feature:
     image: woodpeckerci/plugin-docker-buildx
     settings:
-      repo: ${CI_REPO_OWNER/redpencilio/redpencil}/${CI_REPO_NAME}
+      repo: "${CI_REPO_OWNER/redpencilio/redpencil}/${CI_REPO_NAME}"
       tags: ${CI_COMMIT_BRANCH/\//-}
-      platforms: linux/amd64
-      purge: true
-    secrets: [ docker_username, docker_password ]
-when:
-  # all events except pull_request
-  - event: [push, pull_request_closed, tag, release, deployment, cron, manual]
-    branch: feature/*
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+    when:
+      - event: push
+        branch: [feature/*]
