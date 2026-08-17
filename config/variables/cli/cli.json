@@ -1,91 +1,185 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^3.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^7.0.0/components/context.jsonld",
   "@graph": [
     {
       "comment": "Extracts CLI arguments into a key/value object. Config and mainModulePath are only defined here so their description is returned.",
       "@id": "urn:solid-server-app-setup:default:CliExtractor",
       "@type": "YargsCliExtractor",
-      "parameters": {
-        "config": {
-          "alias": "c",
-          "requiresArg": true,
-          "type": "string",
-          "describe": "The configuration for the server. The default only stores data in memory; to persist to your filesystem, use @css:config/file.json."
+      "parameters": [
+        {
+          "@type": "YargsParameter",
+          "name": "config",
+          "options": {
+            "alias": "c",
+            "requiresArg": true,
+            "type": "array",
+            "describe": "The configuration(s) for the server. The default only stores data in memory; to persist to your filesystem, use @css:config/file.json."
+          }
         },
-        "mainModulePath": {
-          "alias": "m",
-          "requiresArg": true,
-          "type": "string",
-          "describe": "Path from where Components.js will start its lookup when initializing configurations."
+        {
+          "@type": "YargsParameter",
+          "name": "mainModulePath",
+          "options": {
+            "alias": "m",
+            "requiresArg": true,
+            "type": "string",
+            "describe": "Path from where Components.js will start its lookup when initializing configurations."
+          }
         },
-        "loggingLevel": {
-          "alias": "l",
-          "requiresArg": true,
-          "type": "string",
-          "describe": "The detail level of logging; useful for debugging problems."
+        {
+          "@type": "YargsParameter",
+          "name": "loggingLevel",
+          "options": {
+            "alias": "l",
+            "requiresArg": true,
+            "type": "string",
+            "describe": "The detail level of logging; useful for debugging problems."
+          }
         },
-        "baseUrl": {
-          "alias": "b",
-          "requiresArg": true,
-          "type": "string",
-          "describe": "The public URL of your server."
+        {
+          "@type": "YargsParameter",
+          "name": "baseUrl",
+          "options": {
+            "alias": "b",
+            "requiresArg": true,
+            "type": "string",
+            "describe": "The public URL of your server."
+          }
         },
-        "port": {
-          "alias": "p",
-          "requiresArg": true,
-          "type": "number",
-          "describe": "The TCP port on which the server runs."
+        {
+          "@type": "YargsParameter",
+          "name": "port",
+          "options": {
+            "alias": "p",
+            "requiresArg": true,
+            "type": "number",
+            "describe": "The TCP port on which the server runs."
+          }
         },
-        "rootFilePath": {
-          "alias": "f",
-          "requiresArg": true,
-          "type": "string",
-          "describe": "Root folder of the server, when using a file-based configuration."
+        {
+          "@type": "YargsParameter",
+          "name": "socket",
+          "options": {
+            "requiresArg": true,
+            "type": "string",
+            "describe": "The path to the Unix Domain Socket on which the server runs. This overrides the port argument."
+          }
         },
-        "showStackTrace": {
-          "alias": "t",
-          "type": "boolean",
-          "describe": "Enables detailed logging on error pages."
+        {
+          "@type": "YargsParameter",
+          "name": "rootFilePath",
+          "options": {
+            "alias": "f",
+            "requiresArg": true,
+            "type": "string",
+            "describe": "Root folder of the server, when using a file-based configuration."
+          }
         },
-        "sparqlEndpoint": {
-          "alias": "s",
-          "requiresArg": true,
-          "type": "string",
-          "describe": "URL of the SPARQL endpoint, when using a quadstore-based configuration."
+        {
+          "@type": "YargsParameter",
+          "name": "showStackTrace",
+          "options": {
+            "alias": "t",
+            "type": "boolean",
+            "describe": "Enables detailed logging on error pages."
+          }
         },
-        "podConfigJson": {
-          "requiresArg": true,
-          "type": "string",
-          "describe": "Path to the file that keeps track of dynamic Pod configurations."
+        {
+          "@type": "YargsParameter",
+          "name": "sparqlEndpoint",
+          "options": {
+            "alias": "s",
+            "requiresArg": true,
+            "type": "string",
+            "describe": "URL of the SPARQL endpoint, when using a quadstore-based configuration."
+          }
         },
-        "emailSenderName": {
-          "requiresArg": true,
-          "type": "string",
-          "describe": "Recovery email sender name"
+        {
+          "@type": "YargsParameter",
+          "name": "podConfigJson",
+          "options": {
+            "requiresArg": true,
+            "type": "string",
+            "describe": "Path to the file that keeps track of dynamic Pod configurations."
+          }
         },
-        "emailHost": {
-          "requiresArg": true,
-          "type": "string",
-          "describe": "Recovery email host"
+        {
+          "@type": "YargsParameter",
+          "name": "seedConfig",
+          "options": {
+            "requiresArg": true,
+            "type": "string",
+            "describe": "Path to the file that will be used to seed accounts and pods."
+          }
         },
-        "emailPort": {
-          "requiresArg": true,
-          "type": "number",
-          "describe": "Recovery email port"
+        {
+          "@type": "YargsParameter",
+          "name": "workers",
+          "options": {
+            "alias": "w",
+            "requiresArg": true,
+            "type": "number",
+            "describe": "Run the server in multithreaded mode using workers. (special values: -1: num_cores-1, 0: num_cores). Defaults to 1 (singlethreaded)"
+          }
         },
-        "emailUser": {
-          "requiresArg": true,
-          "type": "string",
-          "describe": "Recovery email user"
+        {
+          "@type": "YargsParameter",
+          "name": "confirmMigration",
+          "options": {
+            "type": "boolean",
+            "describe": "Skips the confirmation prompts during migration from older versions."
+          }
         },
-        "emailPassword": {
-          "requiresArg": true,
-          "type": "string",
-          "describe": "Recovery email password"
+        {
+          "@type": "YargsParameter",
+          "name": "emailSenderName",
+          "options": {
+            "requiresArg": true,
+            "type": "string",
+            "describe": "Recovery email sender name"
+          }
+        },
+        {
+          "@type": "YargsParameter",
+          "name": "emailHost",
+          "options": {
+            "requiresArg": true,
+            "type": "string",
+            "describe": "Recovery email host"
+          }
+        },
+        {
+          "@type": "YargsParameter",
+          "name": "emailPort",
+          "options": {
+            "requiresArg": true,
+            "type": "string",
+            "describe": "Recovery email port"
+          }
+        },
+        {
+          "@type": "YargsParameter",
+          "name": "emailUser",
+          "options": {
+            "requiresArg": true,
+            "type": "string",
+            "describe": "Recovery email user"
+          }
+        },
+        {
+          "@type": "YargsParameter",
+          "name": "emailPassword",
+          "options": {
+            "requiresArg": true,
+            "type": "string",
+            "describe": "Recovery email password"
+          }
         }
-      },
+      ],
       "options": {
-        "usage": "node ./bin/server.js [args]"
+        "usage": "node ./bin/server.js [args]",
+        "envVarPrefix": "CSS",
+        "loadFromEnv": true
       }
     }
   ]

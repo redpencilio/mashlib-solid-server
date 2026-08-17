@@ -1,19 +1,19 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^3.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^7.0.0/components/context.jsonld",
   "import": [
     "/usr/app/config/variables/cli/cli.json",
     "/usr/app/config/variables/resolver/resolver.json"
   ],
   "@graph": [
     {
-      "comment": "Combines a CliExtractor and SettingsResolver to be used by the AppRunner.",
+      "comment": "Combines a CliExtractor and ShorthandResolver to be used by the AppRunner.",
       "@id": "urn:solid-server-app-setup:default:CliResolver",
       "@type": "CliResolver",
       "cliExtractor": {
         "@id": "urn:solid-server-app-setup:default:CliExtractor"
       },
-      "settingsResolver": {
-        "@id": "urn:solid-server-app-setup:default:SettingsResolver"
+      "shorthandResolver": {
+        "@id": "urn:solid-server-app-setup:default:ShorthandResolver"
       }
     }
   ]

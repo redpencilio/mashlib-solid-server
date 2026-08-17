@@ -1,10 +1,15 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^3.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^7.0.0/components/context.jsonld",
   "comment": "Variables used throughout the other configs. Can be set using the CLI.",
   "@graph": [
     {
       "comment": "Port of the server.",
       "@id": "urn:solid-server:default:variable:port",
+      "@type": "Variable"
+    },
+    {
+      "comment": "Unix Domain Socket of the server.",
+      "@id": "urn:solid-server:default:variable:socket",
       "@type": "Variable"
     },
     {
@@ -35,6 +40,21 @@
     {
       "comment": "Path to the JSON file used to store configuration for dynamic pods.",
       "@id": "urn:solid-server:default:variable:podConfigJson",
+      "@type": "Variable"
+    },
+    {
+      "comment": "Path to the JSON file used to seed pods.",
+      "@id": "urn:solid-server:default:variable:seedConfig",
+      "@type": "Variable"
+    },
+    {
+      "comment": "Run the server in multithreaded mode with the set amount of workers.",
+      "@id": "urn:solid-server:default:variable:workers",
+      "@type": "Variable"
+    },
+    {
+      "comment": "If true, skips the confirmation prompts during migration.",
+      "@id": "urn:solid-server:default:variable:confirmMigration",
       "@type": "Variable"
     },
     {
